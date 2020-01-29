@@ -258,7 +258,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
-`, mySprite, 0, -300)
+`, shooter, 0, -300)
         projectile = sprites.createProjectileFromSprite(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -276,7 +276,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
-`, mySprite, 30, -300)
+`, shooter, 30, -300)
         projectile = sprites.createProjectileFromSprite(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -294,7 +294,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
-`, mySprite, -30, -300)
+`, shooter, -30, -300)
     } else {
         projectile = sprites.createProjectileFromSprite(img`
 . . . . . . . . . . . . . . . . 
@@ -313,7 +313,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
 . . . c . . . . . . . . c . . . 
-`, mySprite, 0, -300)
+`, shooter, 0, -300)
     }
     music.pewPew.play()
     scene.cameraShake(1, 100)
@@ -331,9 +331,10 @@ let diamond: Sprite = null
 let heart: Sprite = null
 let emerald_chooser = 0
 let pew_pew_pew = 0
-let mySprite: Sprite = null
+let shooter: Sprite = null
 info.setScore(0)
 info.setLife(3)
+// Have no idea what  it does
 scene.setTileMap(img`
 . . . . 5 5 . . 5 . 
 . . . . 5 5 . . 5 . 
@@ -355,6 +356,7 @@ scene.setTileMap(img`
 . . . . . . . . . . 
 c c c c c c c c c c 
 `)
+// No idea what it does
 scene.setTile(12, img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -374,7 +376,7 @@ c b d d d d d 5 5 5 5 5 5 5 b .
 . . . c c c c c c c c b b . . . 
 `, true)
 effects.starField.startScreenEffect()
-mySprite = sprites.create(img`
+shooter = sprites.create(img`
 . . . . . . . 9 1 . . . . . . . 
 . . . . . . 6 9 9 1 . . . . . . 
 . . . c . . 6 9 9 1 . . c . . . 
@@ -392,12 +394,14 @@ mySprite = sprites.create(img`
 . . . . . . 5 5 5 5 . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
-controller.moveSprite(mySprite)
-mySprite.setPosition(80, 260)
-mySprite.setFlag(SpriteFlag.StayInScreen, true)
+controller.moveSprite(shooter)
+shooter.setPosition(80, 260)
+shooter.setFlag(SpriteFlag.StayInScreen, true)
 scene.centerCameraAt(80, 230)
 pew_pew_pew = 0
 emerald_chooser = 0
+// Second enemy comes into action only after a certain
+// score
 game.onUpdateInterval(2000, function () {
     if (info.score() > 8000) {
         follower = sprites.create(img`
@@ -419,7 +423,7 @@ game.onUpdateInterval(2000, function () {
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Enemy)
         follower.setPosition(Math.randomRange(10, 150), 93)
-        follower.follow(mySprite, info.score() / 160)
+        follower.follow(shooter, info.score() / 160)
     }
 })
 game.onUpdate(function () {
@@ -441,7 +445,7 @@ game.onUpdate(function () {
 . . . . . . 5 2 2 5 . . . . . . 
 . . . . . . 5 2 2 5 . . . . . . 
 . . . . . . 5 2 2 5 . . . . . . 
-`, mySprite, 0, -10000)
+`, shooter, 0, -10000)
         laser.setKind(SpriteKind.laser)
     }
     if (controller.B.isPressed()) {
@@ -455,6 +459,7 @@ game.onUpdateInterval(5000, function () {
         value.destroy()
     }
 })
+// First enemy
 game.onUpdateInterval(1000, function () {
     flyer = sprites.create(img`
 . . . . . . . . . . . . . . . . 
